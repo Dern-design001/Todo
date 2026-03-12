@@ -289,13 +289,19 @@ const App = () => {
     tempDiv.style.backgroundColor = '#ffffff';
     tempDiv.style.padding = '40px 20px';
     
-    // Decorative Top Border
+    // Decorative Top Border (Sparkles)
     const topDecoration = document.createElement('div');
-    topDecoration.style.height = '12px';
-    topDecoration.style.width = '100%';
-    topDecoration.style.background = 'linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #60a5fa 50%, #3b82f6 75%, #1e3a8a 100%)';
-    topDecoration.style.borderRadius = '10px';
-    topDecoration.style.marginBottom = '30px';
+    topDecoration.style.display = 'flex';
+    topDecoration.style.justifyContent = 'center';
+    topDecoration.style.marginBottom = '20px';
+    topDecoration.innerHTML = `
+      <svg width="120" height="60" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#3b82f6" d="M60 0 Q60 40 90 40 Q60 40 60 80 Q60 40 30 40 Q60 40 60 0 Z" />
+        <path fill="#2563eb" d="M100 0 Q100 15 112 15 Q100 15 100 30 Q100 15 88 15 Q100 15 100 0 Z" />
+        <path fill="#60a5fa" d="M120 40 Q120 55 132 55 Q120 55 120 70 Q120 55 108 55 Q120 55 120 40 Z" />
+        <path fill="#1d4ed8" d="M160 10 Q160 45 190 45 Q160 45 160 80 Q160 45 130 45 Q160 45 160 10 Z" />
+      </svg>
+    `;
     tempDiv.appendChild(topDecoration);
 
     // Top heading "UNFOLD"
