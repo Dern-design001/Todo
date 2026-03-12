@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import html2pdf from 'html2pdf.js';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
-import { Plus, Trash2, Check, ChevronDown, ChevronRight, LogOut, Pin, X, Settings, Heart } from 'lucide-react';
+import { Plus, Trash2, Check, ChevronDown, ChevronRight, LogOut, Pin, X, Settings, Heart, Printer } from 'lucide-react';
 import ParticleBackground from './components/ParticleBackground';
 import LandingPage from './components/LandingPage';
 import DashboardView from './components/DashboardView';
@@ -280,6 +281,35 @@ const App = () => {
     }));
   };
 
+  const exportToPDF = () => {
+    if (currentView !== 'dashboard') {
+        setCurrentView('dashboard');
+    }
+    const element = document.getElementById('dashboard-content');
+    if (!element) return;
+    
+    // Ensure all topics are expanded temporarily for the PDF
+    const allExpanded = {};
+    topics.forEach(t => allExpanded[t.id] = true);
+    setExpandedTopics(allExpanded);
+
+    setTimeout(() => {
+      const opt = {
+        margin:       15,
+        filename:     'my-dashboard-progress.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#020617' },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      element.classList.add('pdf-exporting');
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        element.classList.remove('pdf-exporting');
+      });
+    }, 500); // Give React time to render expanded items
+  };
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[#020617]">
       <div className="relative">
@@ -321,6 +351,13 @@ const App = () => {
                 title="Zen Background Mode"
               >
                 <Heart size={18} className={currentView === 'zen' ? "fill-current" : ""} />
+              </button>
+              <button 
+                onClick={exportToPDF} 
+                className="transition-all hover:scale-110 text-slate-500 hover:text-blue-400"
+                title="Export Details as PDF"
+              >
+                <Printer size={18} />
               </button>
             </div>
           </div>
@@ -366,28 +403,30 @@ const App = () => {
         {currentView === 'home' && <LandingPage />}
         {currentView === 'dashboard' && (
           user ? (
-            <DashboardView 
-              topics={topics}
-              input={input}
-              setInput={setInput}
-              addTopic={addTopic}
-              editingId={editingId}
-              setEditingId={setEditingId}
-              editText={editText}
-              setEditText={setEditText}
-              saveEdit={saveEdit}
-              toggleComplete={toggleComplete}
-              togglePin={togglePin}
-              deleteTopic={deleteTopic}
-              expandedTopics={expandedTopics}
-              setExpandedTopics={setExpandedTopics}
-              subTopicInputs={subTopicInputs}
-              setSubTopicInputs={setSubTopicInputs}
-              addSubTopic={addSubTopic}
-            toggleSubTopic={toggleSubTopic}
-            toggleSubTopicPin={toggleSubTopicPin}
-            deleteSubTopic={deleteSubTopic}
-          />
+            <div id="dashboard-content">
+              <DashboardView 
+                topics={topics}
+                input={input}
+                setInput={setInput}
+                addTopic={addTopic}
+                editingId={editingId}
+                setEditingId={setEditingId}
+                editText={editText}
+                setEditText={setEditText}
+                saveEdit={saveEdit}
+                toggleComplete={toggleComplete}
+                togglePin={togglePin}
+                deleteTopic={deleteTopic}
+                expandedTopics={expandedTopics}
+                setExpandedTopics={setExpandedTopics}
+                subTopicInputs={subTopicInputs}
+                setSubTopicInputs={setSubTopicInputs}
+                addSubTopic={addSubTopic}
+                toggleSubTopic={toggleSubTopic}
+                toggleSubTopicPin={toggleSubTopicPin}
+                deleteSubTopic={deleteSubTopic}
+              />
+            </div>
           ) : (
             <div className="min-h-[80vh] flex items-center justify-center px-6">
               <div className="max-w-2xl mx-auto text-center">
@@ -420,6 +459,10 @@ const App = () => {
         @keyframes slide-in-from-top-4 { from { transform: translateY(-1rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-in { animation: fade-in 0.6s ease-out; }
         .slide-in-from-top-4 { animation: slide-in-from-top-4 0.5s ease-out; }
+        .pdf-exporting form, .pdf-exporting input, .pdf-exporting button { display: none !important; }
+        .pdf-exporting { padding: 30px; border-radius: 0; background-color: #020617; min-height: 100vh; }
+        .pdf-exporting div { box-shadow: none !important; }
+        .pdf-exporting .bg-emerald-500 { background-color: transparent !important; border-color: #10b981 !important; color: #10b981 !important; }
       `}</style>
     </div>
   );
