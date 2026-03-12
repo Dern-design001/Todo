@@ -309,6 +309,7 @@ const App = () => {
       const topicDiv = document.createElement('div');
       topicDiv.style.paddingBottom = '15px';
       topicDiv.style.borderBottom = '1px solid #e2e8f0';
+      topicDiv.className = 'topic-container'; // for pagebreak avoidance
       
       const titleDiv = document.createElement('div');
       titleDiv.style.display = 'flex';
@@ -394,19 +395,28 @@ const App = () => {
     quoteDiv.style.textAlign = 'center';
     quoteDiv.style.marginTop = '60px';
     quoteDiv.style.paddingTop = '30px';
-    quoteDiv.style.fontFamily = "'Brush Script MT', 'Lucida Handwriting', 'Segoe Print', cursive";
-    quoteDiv.style.fontSize = '24px';
+    quoteDiv.style.fontFamily = "'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive";
+    quoteDiv.style.fontSize = '20px';
     quoteDiv.style.color = '#1e3a8a'; // Dark blue
     quoteDiv.style.lineHeight = '1.6';
     quoteDiv.innerHTML = "Great careers aren't built in a day;<br/>They are built in the moments you choose to start.";
     tempDiv.appendChild(quoteDiv);
 
+    // Get username for filename
+    let userNameStr = "User";
+    if (user) {
+      userNameStr = user.displayName || (user.email ? user.email.split('@')[0] : "User");
+    }
+    // Clean up filename
+    userNameStr = userNameStr.replace(/[^a-zA-Z0-9]/g, '_');
+
     const opt = {
       margin:       15,
-      filename:     'UNFOLD-Dashboard.pdf',
+      filename:     `${userNameStr}_UNFOLD.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: 'css', avoid: '.topic-container' }
     };
     
     // Trigger download without attaching to DOM
