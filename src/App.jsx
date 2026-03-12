@@ -317,7 +317,7 @@ const App = () => {
               </button>
               <button 
                 onClick={() => setCurrentView('zen')} 
-                className={`transition-all hover:scale-110 hover:text-red-400 ${currentView === 'zen' ? 'text-red-400 text-shadow-glow' : 'text-slate-500'}`}
+                className={`transition-all hover:scale-110 hover:text-blue-400 ${currentView === 'zen' ? 'text-blue-400 text-shadow-glow' : 'text-slate-500'}`}
                 title="Zen Background Mode"
               >
                 <Heart size={18} className={currentView === 'zen' ? "fill-current" : ""} />

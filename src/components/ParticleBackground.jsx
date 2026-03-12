@@ -10,8 +10,8 @@ const ParticleBackground = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let particles = [];
-    const particleCount = 80;
-    const connectionDistance = 150;
+    const particleCount = 200;
+    const connectionDistance = 180;
     const mouse = { x: null, y: null, radius: 200, pressed: false };
 
     const resize = () => {
