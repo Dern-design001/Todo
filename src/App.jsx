@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
-import { Plus, Trash2, Check, ChevronDown, ChevronRight, LogOut, Pin, X, Settings } from 'lucide-react';
+import { Plus, Trash2, Check, ChevronDown, ChevronRight, LogOut, Pin, X, Settings, Heart } from 'lucide-react';
 import ParticleBackground from './components/ParticleBackground';
 import LandingPage from './components/LandingPage';
 import DashboardView from './components/DashboardView';
@@ -314,6 +314,13 @@ const App = () => {
                 className={`text-xs font-black tracking-widest transition-all hover:scale-110 ${currentView === 'dashboard' ? 'text-blue-400' : 'text-slate-500'}`}
               >
                 DASHBOARD
+              </button>
+              <button 
+                onClick={() => setCurrentView('zen')} 
+                className={`transition-all hover:scale-110 hover:text-red-400 ${currentView === 'zen' ? 'text-red-400 text-shadow-glow' : 'text-slate-500'}`}
+                title="Zen Background Mode"
+              >
+                <Heart size={18} className={currentView === 'zen' ? "fill-current" : ""} />
               </button>
             </div>
           </div>
