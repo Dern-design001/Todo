@@ -282,32 +282,135 @@ const App = () => {
   };
 
   const exportToPDF = () => {
-    if (currentView !== 'dashboard') {
-        setCurrentView('dashboard');
-    }
-    const element = document.getElementById('dashboard-content');
-    if (!element) return;
+    // Generate specialized PDF DOM
+    const tempDiv = document.createElement('div');
+    tempDiv.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+    tempDiv.style.color = '#000000';
+    tempDiv.style.backgroundColor = '#ffffff';
+    tempDiv.style.padding = '40px 20px';
     
-    // Ensure all topics are expanded temporarily for the PDF
-    const allExpanded = {};
-    topics.forEach(t => allExpanded[t.id] = true);
-    setExpandedTopics(allExpanded);
+    // Top heading "UNFOLD"
+    const heading = document.createElement('h1');
+    heading.innerText = 'UNFOLD';
+    heading.style.textAlign = 'center';
+    heading.style.color = '#2563eb'; // blue theme
+    heading.style.fontSize = '36px';
+    heading.style.marginBottom = '40px';
+    heading.style.fontWeight = '900';
+    heading.style.letterSpacing = '2px';
+    tempDiv.appendChild(heading);
+    
+    const contentWrapper = document.createElement('div');
+    contentWrapper.style.display = 'flex';
+    contentWrapper.style.flexDirection = 'column';
+    contentWrapper.style.gap = '25px';
+    
+    topics.forEach(topic => {
+      const topicDiv = document.createElement('div');
+      topicDiv.style.paddingBottom = '15px';
+      topicDiv.style.borderBottom = '1px solid #e2e8f0';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.style.display = 'flex';
+      titleDiv.style.justifyContent = 'space-between';
+      titleDiv.style.alignItems = 'center';
+      
+      const titleText = document.createElement('h2');
+      // Subtopics size will be ~15px. 20px is ~33% larger.
+      titleText.innerText = topic.text;
+      titleText.style.fontSize = '20px';
+      titleText.style.fontWeight = 'bold';
+      titleText.style.color = '#1e3a8a';
+      titleText.style.margin = '0';
+      
+      const statusSpan = document.createElement('span');
+      const topicTotal = 1 + topic.subTopics.length;
+      const topicDone = (topic.completed ? 1 : 0) + topic.subTopics.filter(s => s.completed).length;
+      const percent = Math.round((topicDone / topicTotal) * 100);
+      statusSpan.innerText = `${percent}%`;
+      statusSpan.style.fontSize = '12px';
+      statusSpan.style.backgroundColor = '#eff6ff';
+      statusSpan.style.color = '#2563eb';
+      statusSpan.style.padding = '4px 8px';
+      statusSpan.style.borderRadius = '16px';
+      statusSpan.style.fontWeight = 'bold';
+      
+      titleDiv.appendChild(titleText);
+      titleDiv.appendChild(statusSpan);
+      topicDiv.appendChild(titleDiv);
+      
+      if (topic.subTopics.length > 0) {
+        const ul = document.createElement('ul');
+        ul.style.listStyleType = 'none';
+        ul.style.paddingLeft = '15px';
+        ul.style.marginTop = '12px';
+        ul.style.marginBottom = '0';
+        
+        const sortedSubTopics = [...topic.subTopics].sort((a, b) => {
+          if (a.isPinned && !b.isPinned) return -1;
+          if (!a.isPinned && b.isPinned) return 1;
+          return 0;
+        });
+        
+        sortedSubTopics.forEach(sub => {
+          const li = document.createElement('li');
+          li.style.fontSize = '15px'; // ~30% smaller than topic title
+          li.style.color = '#000000'; // black text (clear for viewing)
+          li.style.marginBottom = '8px';
+          li.style.display = 'flex';
+          li.style.alignItems = 'flex-start';
+          li.style.gap = '10px';
+          
+          const check = document.createElement('span');
+          check.innerHTML = sub.completed ? '&#10003;' : '&#8226;'; 
+          check.style.color = sub.completed ? '#10b981' : '#2563eb'; // Green if done, blue dot if not
+          check.style.fontWeight = 'bold';
+          
+          const text = document.createElement('span');
+          text.innerText = sub.text;
+          text.style.lineHeight = '1.4';
+          
+          li.appendChild(check);
+          li.appendChild(text);
+          ul.appendChild(li);
+        });
+        topicDiv.appendChild(ul);
+      }
+      contentWrapper.appendChild(topicDiv);
+    });
+    
+    if (topics.length === 0) {
+      const emptyDiv = document.createElement('p');
+      emptyDiv.innerText = 'No topics created yet.';
+      emptyDiv.style.textAlign = 'center';
+      emptyDiv.style.color = '#64748b';
+      contentWrapper.appendChild(emptyDiv);
+    }
+    
+    tempDiv.appendChild(contentWrapper);
+    
+    // Add cursive quote at the bottom
+    const quoteDiv = document.createElement('div');
+    quoteDiv.style.textAlign = 'center';
+    quoteDiv.style.marginTop = '60px';
+    quoteDiv.style.paddingTop = '30px';
+    quoteDiv.style.fontFamily = "'Brush Script MT', 'Lucida Handwriting', 'Segoe Print', cursive";
+    quoteDiv.style.fontSize = '24px';
+    quoteDiv.style.color = '#1e3a8a'; // Dark blue
+    quoteDiv.style.lineHeight = '1.6';
+    quoteDiv.innerHTML = "Great careers aren't built in a day;<br/>They are built in the moments you choose to start.";
+    tempDiv.appendChild(quoteDiv);
 
-    setTimeout(() => {
-      const opt = {
-        margin:       15,
-        filename:     'my-dashboard-progress.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#020617' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      
-      element.classList.add('pdf-exporting');
-      
-      html2pdf().set(opt).from(element).save().then(() => {
-        element.classList.remove('pdf-exporting');
-      });
-    }, 500); // Give React time to render expanded items
+    const opt = {
+      margin:       15,
+      filename:     'UNFOLD-Dashboard.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    // Trigger download without attaching to DOM
+    html2pdf().set(opt).from(tempDiv).save();
   };
 
   if (loading) return (
