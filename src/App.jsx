@@ -289,6 +289,15 @@ const App = () => {
     tempDiv.style.backgroundColor = '#ffffff';
     tempDiv.style.padding = '40px 20px';
     
+    // Decorative Top Border
+    const topDecoration = document.createElement('div');
+    topDecoration.style.height = '12px';
+    topDecoration.style.width = '100%';
+    topDecoration.style.background = 'linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #60a5fa 50%, #3b82f6 75%, #1e3a8a 100%)';
+    topDecoration.style.borderRadius = '10px';
+    topDecoration.style.marginBottom = '30px';
+    tempDiv.appendChild(topDecoration);
+
     // Top heading "UNFOLD"
     const heading = document.createElement('h1');
     heading.innerText = 'UNFOLD';
@@ -324,20 +333,7 @@ const App = () => {
       titleText.style.color = '#1e3a8a';
       titleText.style.margin = '0';
       
-      const statusSpan = document.createElement('span');
-      const topicTotal = 1 + topic.subTopics.length;
-      const topicDone = (topic.completed ? 1 : 0) + topic.subTopics.filter(s => s.completed).length;
-      const percent = Math.round((topicDone / topicTotal) * 100);
-      statusSpan.innerText = `${percent}%`;
-      statusSpan.style.fontSize = '12px';
-      statusSpan.style.backgroundColor = '#eff6ff';
-      statusSpan.style.color = '#2563eb';
-      statusSpan.style.padding = '4px 8px';
-      statusSpan.style.borderRadius = '16px';
-      statusSpan.style.fontWeight = 'bold';
-      
       titleDiv.appendChild(titleText);
-      titleDiv.appendChild(statusSpan);
       topicDiv.appendChild(titleDiv);
       
       if (topic.subTopics.length > 0) {
