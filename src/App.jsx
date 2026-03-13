@@ -7,6 +7,7 @@ import ParticleBackground from './components/ParticleBackground';
 import LandingPage from './components/LandingPage';
 import DashboardView from './components/DashboardView';
 import ProfileModal from './components/ProfileModal';
+import HelpModal from './components/HelpModal';
 
 // Firebase configuration - hardcoded for testing
 const firebaseConfig = {
@@ -40,6 +41,7 @@ const App = () => {
   const [expandedTopics, setExpandedTopics] = useState({});
   const [subTopicInputs, setSubTopicInputs] = useState({});
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Get storage key based on user email
   const getStorageKey = (userEmail) => {
@@ -510,6 +512,13 @@ const App = () => {
                 {isAuthenticating ? 'SYNCING...' : 'LOGIN'}
               </button>
             )}
+            <button 
+              onClick={() => setShowHelpModal(true)}
+              className="w-9 h-9 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transform hover:scale-110"
+              title="Help & Guides"
+            >
+              ?
+            </button>
           </div>
         </div>
       </nav>
@@ -567,6 +576,11 @@ const App = () => {
           onClose={() => setShowProfileModal(false)}
           onUpdate={handleProfileUpdate}
         />
+      )}
+
+      {/* Help Modal */}
+      {showHelpModal && (
+        <HelpModal onClose={() => setShowHelpModal(false)} />
       )}
 
       <style>{`
