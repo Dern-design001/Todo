@@ -164,6 +164,7 @@ const App = () => {
       completed: false,
       isPinned: false,
       subTopics: [],
+      notes: '',
       createdAt: Date.now()
     };
     
@@ -267,6 +268,14 @@ const App = () => {
     if (!user) return;
     
     setTopics(topics.filter(topic => topic.id !== id));
+  };
+
+  const updateTopicNotes = async (id, notes) => {
+    if (!user) return;
+    
+    setTopics(topics.map(topic => 
+      topic.id === id ? { ...topic, notes } : topic
+    ));
   };
 
   const deleteSubTopic = async (topicId, subId) => {
@@ -553,6 +562,7 @@ const App = () => {
                 toggleComplete={toggleComplete}
                 togglePin={togglePin}
                 deleteTopic={deleteTopic}
+                updateTopicNotes={updateTopicNotes}
                 expandedTopics={expandedTopics}
                 setExpandedTopics={setExpandedTopics}
                 subTopicInputs={subTopicInputs}

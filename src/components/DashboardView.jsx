@@ -1,9 +1,9 @@
 import React from 'react';
-import { Plus, Trash2, Check, ChevronDown, ChevronRight, Pin, X, Circle } from 'lucide-react';
+import { Plus, Trash2, Check, ChevronDown, ChevronRight, Pin, X, Circle, FileText } from 'lucide-react';
 
 const DashboardView = ({
   topics, input, setInput, addTopic, editingId, setEditingId, editText, setEditText,
-  saveEdit, toggleComplete, togglePin, deleteTopic, expandedTopics, setExpandedTopics,
+  saveEdit, toggleComplete, togglePin, deleteTopic, updateTopicNotes, expandedTopics, setExpandedTopics,
   subTopicInputs, setSubTopicInputs, addSubTopic, toggleSubTopic, toggleSubTopicPin, deleteSubTopic
 }) => {
   return (
@@ -219,6 +219,20 @@ const DashboardView = ({
                       >
                         <Plus size={22} />
                       </button>
+                    </div>
+
+                    {/* Topic Notes Notepad */}
+                    <div className="mt-8 pt-6 border-t border-slate-800/50 pl-14 pr-2">
+                      <div className="flex items-center gap-2 mb-3">
+                        <FileText size={18} className="text-blue-400" />
+                        <h4 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Topic Notes</h4>
+                      </div>
+                      <textarea
+                        className="w-full bg-slate-950/40 border-2 border-slate-800/50 rounded-2xl p-4 text-[15px] text-slate-200 placeholder:text-slate-600 outline-none focus:border-blue-500/50 transition-all shadow-inner min-h-[120px] resize-y"
+                        placeholder="Add your notes, links, or thoughts about this topic here..."
+                        value={topic.notes || ''}
+                        onChange={(e) => updateTopicNotes(topic.id, e.target.value)}
+                      />
                     </div>
                   </div>
                 )}
