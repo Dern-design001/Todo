@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Trash2, Check, ChevronDown, ChevronRight, Pin, X, Circle, FileText } from 'lucide-react';
 
 const DashboardView = ({
@@ -6,6 +6,8 @@ const DashboardView = ({
   saveEdit, toggleComplete, togglePin, deleteTopic, updateTopicNotes, expandedTopics, setExpandedTopics,
   subTopicInputs, setSubTopicInputs, addSubTopic, toggleSubTopic, toggleSubTopicPin, deleteSubTopic
 }) => {
+  const [activeNoteId, setActiveNoteId] = useState(null);
+
   return (
     <div className="max-w-3xl mx-auto p-6 pt-10 pb-20">
       {/* Input Form */}
@@ -141,6 +143,13 @@ const DashboardView = ({
                       {expandedTopics[topic.id] ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
                     </button>
                     <button 
+                      onClick={() => setActiveNoteId(topic.id)} 
+                      className="p-3 text-slate-600 hover:text-blue-400 transition-colors"
+                      title="Topic Notes"
+                    >
+                      <FileText size={22} />
+                    </button>
+                    <button 
                       onClick={() => deleteTopic(topic.id)} 
                       className="p-3 text-slate-600 hover:text-red-400 transition-colors"
                     >
@@ -220,20 +229,6 @@ const DashboardView = ({
                         <Plus size={22} />
                       </button>
                     </div>
-
-                    {/* Topic Notes Notepad */}
-                    <div className="mt-8 pt-6 border-t border-slate-800/50 pl-14 pr-2">
-                      <div className="flex items-center gap-2 mb-3">
-                        <FileText size={18} className="text-blue-400" />
-                        <h4 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Topic Notes</h4>
-                      </div>
-                      <textarea
-                        className="w-full bg-slate-950/40 border-2 border-slate-800/50 rounded-2xl p-4 text-[15px] text-slate-200 placeholder:text-slate-600 outline-none focus:border-blue-500/50 transition-all shadow-inner min-h-[120px] resize-y"
-                        placeholder="Add your notes, links, or thoughts about this topic here..."
-                        value={topic.notes || ''}
-                        onChange={(e) => updateTopicNotes(topic.id, e.target.value)}
-                      />
-                    </div>
                   </div>
                 )}
               </div>
@@ -241,6 +236,41 @@ const DashboardView = ({
           );
         })}
       </div>
+
+      {/* Notes Modal */}
+      {activeNoteId && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setActiveNoteId(null)}
+        >
+          <div 
+            className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-slate-800/50 p-6 flex justify-between items-center border-b border-slate-700/50 shrink-0">
+              <h3 className="text-xl font-bold text-white flex items-center gap-3 truncate">
+                <FileText className="text-blue-400 shrink-0" />
+                <span className="truncate">Notes: {topics.find(t => t.id === activeNoteId)?.text}</span>
+              </h3>
+              <button 
+                onClick={() => setActiveNoteId(null)} 
+                className="text-slate-400 hover:text-white transition-colors shrink-0 bg-slate-800 p-2 rounded-full border border-slate-700 hover:bg-slate-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6 flex-grow overflow-auto flex flex-col">
+              <textarea
+                autoFocus
+                className="w-full flex-grow bg-slate-950/50 border-2 border-slate-800/80 rounded-2xl p-6 text-[17px] leading-relaxed text-slate-200 placeholder:text-slate-600 outline-none focus:border-blue-500/50 transition-all min-h-[400px] resize-none shadow-inner"
+                placeholder="Add your notes, links, or thoughts here..."
+                value={topics.find(t => t.id === activeNoteId)?.notes || ''}
+                onChange={(e) => updateTopicNotes(activeNoteId, e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
