@@ -481,7 +481,7 @@ const App = () => {
           
           <div className="flex items-center gap-5">
             {user && !user.isAnonymous ? (
-              <div className="flex items-center gap-4 bg-slate-900/60 p-2 pr-5 rounded-3xl border border-slate-800 shadow-xl">
+              <div className="flex items-center gap-4 bg-slate-900/60 p-2 pr-2 rounded-3xl border border-slate-800 shadow-xl">
                 {user.photoURL && (
                   <img src={user.photoURL} alt={user.displayName || 'User'} className="w-9 h-9 rounded-2xl border-2 border-slate-800 shadow-md" />
                 )}
@@ -502,23 +502,33 @@ const App = () => {
                 >
                   <LogOut size={22} />
                 </button>
+                <div className="w-px h-5 bg-slate-700/50 mx-1"></div>
+                <button 
+                  onClick={() => setShowHelpModal(true)}
+                  className="w-8 h-8 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-xs hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)] transform hover:scale-110"
+                  title="Help & Guides"
+                >
+                  ?
+                </button>
               </div>
             ) : (
-              <button 
-                onClick={handleGoogleLogin} 
-                disabled={isAuthenticating}
-                className="bg-slate-900/50 border-2 border-slate-800 px-8 py-3 rounded-2xl text-sm font-black text-slate-100 hover:border-blue-500 transition-all transform hover:-translate-y-0.5 disabled:opacity-50"
-              >
-                {isAuthenticating ? 'SYNCING...' : 'LOGIN'}
-              </button>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={handleGoogleLogin} 
+                  disabled={isAuthenticating}
+                  className="bg-slate-900/50 border-2 border-slate-800 px-8 py-3 rounded-2xl text-sm font-black text-slate-100 hover:border-blue-500 transition-all transform hover:-translate-y-0.5 disabled:opacity-50"
+                >
+                  {isAuthenticating ? 'SYNCING...' : 'LOGIN'}
+                </button>
+                <button 
+                  onClick={() => setShowHelpModal(true)}
+                  className="w-9 h-9 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transform hover:scale-110"
+                  title="Help & Guides"
+                >
+                  ?
+                </button>
+              </div>
             )}
-            <button 
-              onClick={() => setShowHelpModal(true)}
-              className="w-9 h-9 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transform hover:scale-110"
-              title="Help & Guides"
-            >
-              ?
-            </button>
           </div>
         </div>
       </nav>
