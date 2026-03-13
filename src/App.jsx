@@ -495,21 +495,23 @@ const App = () => {
                 >
                   <Settings size={20} />
                 </button>
-                <button 
-                  onClick={handleLogout} 
-                  className="text-slate-500 hover:text-red-400 transition-colors transform hover:rotate-12"
-                  title="Logout"
-                >
-                  <LogOut size={22} />
-                </button>
-                <div className="w-px h-5 bg-slate-700/50 mx-1"></div>
-                <button 
-                  onClick={() => setShowHelpModal(true)}
-                  className="w-8 h-8 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-xs hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)] transform hover:scale-110"
-                  title="Help & Guides"
-                >
-                  ?
-                </button>
+                <div className="flex items-center gap-2 border-l border-slate-800/50 pl-2 ml-1">
+                  <button 
+                    onClick={handleLogout} 
+                    className="text-slate-500 hover:text-red-400 transition-colors transform hover:rotate-12"
+                    title="Logout"
+                  >
+                    <LogOut size={22} />
+                  </button>
+                  <div className="w-px h-5 bg-slate-700/50"></div>
+                  <button 
+                    onClick={() => setShowHelpModal(true)}
+                    className="w-8 h-8 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-xs hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)] transform hover:scale-110"
+                    title="Help & Guides"
+                  >
+                    ?
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="flex items-center gap-4">
