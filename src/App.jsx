@@ -506,7 +506,7 @@ const App = () => {
                   <div className="w-px h-5 bg-slate-700/50"></div>
                   <button 
                     onClick={() => setShowHelpModal(true)}
-                    className="w-8 h-8 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-xs hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)] transform hover:scale-110"
+                    className="w-8 h-8 rounded-lg border border-slate-600 bg-slate-800/80 text-slate-400 font-bold text-xs hover:border-blue-500 hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center transform hover:scale-110 hover:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                     title="Help & Guides"
                   >
                     ?
@@ -524,7 +524,7 @@ const App = () => {
                 </button>
                 <button 
                   onClick={() => setShowHelpModal(true)}
-                  className="w-9 h-9 rounded-full border border-blue-500 bg-blue-600/20 text-blue-400 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] transform hover:scale-110"
+                  className="w-9 h-9 rounded-lg border border-slate-700 bg-slate-800/50 text-slate-400 font-bold text-sm hover:border-blue-500 hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center transform hover:scale-110 hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                   title="Help & Guides"
                 >
                   ?
